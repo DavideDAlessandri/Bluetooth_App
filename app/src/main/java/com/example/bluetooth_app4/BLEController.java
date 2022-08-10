@@ -172,10 +172,10 @@ public class BLEController extends Context {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if(null == btGattChar) {
                 for (BluetoothGattService service : gatt.getServices()) {
-                    if (service.getUuid().toString().toUpperCase().startsWith("0000FFE0")) {
+                    if (service.getUuid().toString().toUpperCase().startsWith("19B10000")) {
                         List<BluetoothGattCharacteristic> gattCharacteristics = service.getCharacteristics();
                         for (BluetoothGattCharacteristic bgc : gattCharacteristics) {
-                            if (bgc.getUuid().toString().toUpperCase().startsWith("0000FFE1")) {
+                            if (bgc.getUuid().toString().toUpperCase().startsWith("19B10001")) {
                                 int chprop = bgc.getProperties();
                                 if (((chprop & BluetoothGattCharacteristic.PROPERTY_WRITE) | (chprop & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE)) > 0) {
                                     btGattChar = bgc;
