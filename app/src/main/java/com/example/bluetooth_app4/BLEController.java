@@ -52,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class BLEController extends Context {
     private BluetoothManager bluetoothManager;
 
     private BluetoothGattCharacteristic btGattChar = null;
+    private BluetoothGattCharacteristic characteristic = null;
 
     private ArrayList<BLEControllerListener> listeners = new ArrayList<>();
     private HashMap<String, BluetoothDevice> devices = new HashMap<>();
@@ -161,6 +163,7 @@ public class BLEController extends Context {
                 Log.i("[BLE]", "start service discovery " + bluetoothGatt.discoverServices());
             }else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 btGattChar = null;
+                characteristic = null;
                 Log.w("[BLE]", "DISCONNECTED with status " + status);
                 fireDisconnected();
             }else {
@@ -179,6 +182,7 @@ public class BLEController extends Context {
                                 int chprop = bgc.getProperties();
                                 if (((chprop & BluetoothGattCharacteristic.PROPERTY_WRITE) | (chprop & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE)) > 0) {
                                     btGattChar = bgc;
+                                    characteristic = bgc;
                                     Log.i("[BLE]", "CONNECTED and ready to send");
                                     fireConnected();
                                 }
@@ -188,7 +192,21 @@ public class BLEController extends Context {
                 }
             }
         }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status){
+            super.onCharacteristicRead(gatt, characteristic, status);
+            byte[] value = characteristic.getValue();
+            String message = Arrays.toString(value);
+            messageReceived(message);
+
+        }
     };
+
+    private void messageReceived(String message){
+        for(BLEControllerListener l : this.listeners)
+            l.MessageReceived(message);
+    }
 
     private void fireDisconnected() {
         for(BLEControllerListener l : this.listeners)
@@ -216,6 +234,13 @@ public class BLEController extends Context {
         }
         this.btGattChar.setValue(data);
         bluetoothGatt.writeCharacteristic(this.btGattChar);
+    }
+
+    public void readCharacteristic() {
+        if (ContextCompat.checkSelfPermission(BLEController.this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        bluetoothGatt.readCharacteristic(this.characteristic);
     }
 
     public boolean checkConnectedState() {

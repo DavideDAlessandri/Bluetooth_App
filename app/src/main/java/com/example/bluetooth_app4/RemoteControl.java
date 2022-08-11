@@ -8,6 +8,8 @@
 
 package com.example.bluetooth_app4;
 
+import android.bluetooth.BluetoothGattCharacteristic;
+
 public class RemoteControl {
     private final static byte START = 0x1;
     private final static byte HEARTBEAT = 0x2;
@@ -41,10 +43,11 @@ public class RemoteControl {
         }else{
             message[0]=0;
         }
-        this.bleController.sendData(message);
+        //this.bleController.sendData(message);
+        this.bleController.readCharacteristic();
     }
 
     public void heartbeat() {
-        this.bleController.sendData(createControlWord(HEARTBEAT));
+        //this.bleController.sendData(createControlWord(HEARTBEAT));
     }
 }

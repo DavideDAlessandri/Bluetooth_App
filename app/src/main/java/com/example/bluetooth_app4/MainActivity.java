@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements BLEControllerListener {
     private TextView logView;
@@ -194,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         this.bleController.addBLEControllerListener(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            log("[BLE]\tSearching for BlueCArd...");
+            log("[BLE]\tSearching device...");
             this.bleController.init();
         }
     }
@@ -239,5 +243,11 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         log("Device " + name + " found with address " + address);
         this.deviceAddress = address;
         this.connectButton.setEnabled(true);
+    }
+
+    @Override
+    public void MessageReceived(String message){
+        log("Message received " + message);
+
     }
 }
