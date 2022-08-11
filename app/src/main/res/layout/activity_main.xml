@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:translationY="200dp"
             android:translationX="40dp"
-            android:text="Switch LED" />
+            android:text="Receive" />
     </FrameLayout>
 
 </LinearLayout>

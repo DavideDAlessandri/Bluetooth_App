@@ -35,15 +35,16 @@ public class RemoteControl {
         return command;
     }
 
-    public void switchLED(boolean on) {
-        //this.bleController.sendData(createControlWord(LED_COMMAND, on?VALUE_ON:VALUE_OFF));
+    public void switchButton() { //boolean on
+        /*this.bleController.sendData(createControlWord(LED_COMMAND, on?VALUE_ON:VALUE_OFF));
         byte [] message = new byte[4];
         if(on){
             message[0] = 1;
         }else{
             message[0]=0;
         }
-        //this.bleController.sendData(message);
+        this.bleController.sendData(message);
+        */
         this.bleController.readCharacteristic();
     }
 

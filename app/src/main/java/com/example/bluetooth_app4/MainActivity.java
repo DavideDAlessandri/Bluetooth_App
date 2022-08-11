@@ -8,20 +8,15 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements BLEControllerListener {
     private TextView logView;
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
 
         initConnectButton();
         initDisconnectButton();
-        initSwitchLEDButton();
+        initSwitchButton();
 
         checkBLESupport();
         checkPermissions();
@@ -118,14 +113,14 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         });
     }
 
-    private void initSwitchLEDButton() {
+    private void initSwitchButton() {
         this.switchLEDButton = findViewById(R.id.switchButton);
         this.switchLEDButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isLEDOn = !isLEDOn;
-                remoteControl.switchLED(isLEDOn);
-                log("LED switched " + (isLEDOn ? "On" : "Off"));
+                //isLEDOn = !isLEDOn;
+                remoteControl.switchButton(); //isLEDOn
+                //log("LED switched " + (isLEDOn ? "On" : "Off"));
             }
         });
     }

@@ -135,7 +135,7 @@ public class BLEController extends Context {
         if (ContextCompat.checkSelfPermission(BLEController.this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
 
         }
-        return null != device.getName() && device.getName().startsWith("LED");
+        return null != device.getName() && device.getName().startsWith("Arduino"); //LED
     }
 
     private void deviceFound(BluetoothDevice device) {
@@ -199,6 +199,7 @@ public class BLEController extends Context {
             byte[] value = characteristic.getValue();
             String message = Arrays.toString(value);
             messageReceived(message);
+            readCharacteristic();
 
         }
     };
