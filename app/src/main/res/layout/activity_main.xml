@@ -22,7 +22,7 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="426dp"
+            android:layout_height="393dp"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
@@ -51,9 +51,9 @@
             android:id="@+id/connectButton"
             android:layout_gravity="center"
             android:rotation="270"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:translationY="200dp"
+            android:translationY="250dp"
             android:translationX="-40dp"
             android:text="Connect" />
 
@@ -61,9 +61,9 @@
             android:id="@+id/disconnectButton"
             android:layout_gravity="center"
             android:rotation="270"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:translationY="200dp"
+            android:translationY="250dp"
             android:translationX="0dp"
             android:text="Disc." />
 
@@ -71,11 +71,21 @@
             android:id="@+id/switchButton"
             android:layout_gravity="center"
             android:rotation="270"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:translationY="200dp"
+            android:translationY="250dp"
             android:translationX="40dp"
             android:text="Receive" />
+
+        <Button
+            android:id="@+id/changePage"
+            android:layout_gravity="center"
+            android:rotation="270"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:translationY="135dp"
+            android:translationX="40dp"
+            android:text="Graph" />
     </FrameLayout>
 
 </LinearLayout>

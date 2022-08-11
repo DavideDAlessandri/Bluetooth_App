@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
     private Button connectButton;
     private Button disconnectButton;
     private Button switchLEDButton;
+    private Button pageChanger;
 
     private BLEController bleController;
     private RemoteControl remoteControl;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         initConnectButton();
         initDisconnectButton();
         initSwitchButton();
+        initCageChangerButton();
 
         checkBLESupport();
         checkPermissions();
@@ -121,6 +123,17 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 //isLEDOn = !isLEDOn;
                 remoteControl.switchButton(); //isLEDOn
                 //log("LED switched " + (isLEDOn ? "On" : "Off"));
+                pageChanger.setEnabled(true);
+            }
+        });
+    }
+
+    private void initCageChangerButton(){
+        this.pageChanger =findViewById(R.id.changePage);
+        this.pageChanger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeActivityTwo();
             }
         });
     }
@@ -132,8 +145,15 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 connectButton.setEnabled(false);
                 disconnectButton.setEnabled(false);
                 switchLEDButton.setEnabled(false);
+                pageChanger.setEnabled(false);
             }
         });
+    }
+
+    private void changeActivityTwo(){                                                               //Change activity
+
+        Intent intent = new Intent(this,GraphActivityOne.class);
+        startActivity(intent);
     }
 
     private void log(final String text) {
@@ -198,13 +218,15 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         }
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
 
         this.bleController.removeBLEControllerListener(this);
         stopHeartBeat();
     }
+
+     */
 
     @Override
     public void BLEControllerConnected() {

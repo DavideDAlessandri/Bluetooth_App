@@ -74,6 +74,7 @@ public class BLEController extends Context {
     private BluetoothGattCharacteristic characteristic = null;
 
     private ArrayList<BLEControllerListener> listeners = new ArrayList<>();
+    private ArrayList<GraphListener> listeners2 = new ArrayList<>();
     private HashMap<String, BluetoothDevice> devices = new HashMap<>();
 
     private BLEController(Context ctx) {
@@ -199,6 +200,7 @@ public class BLEController extends Context {
             byte[] value = characteristic.getValue();
             String message = Arrays.toString(value);
             messageReceived(message);
+            displayGraph(message);
             readCharacteristic();
 
         }
@@ -207,6 +209,11 @@ public class BLEController extends Context {
     private void messageReceived(String message){
         for(BLEControllerListener l : this.listeners)
             l.MessageReceived(message);
+    }
+
+    private void displayGraph(String message){
+        for(GraphListener l : this.listeners2)
+            l.DisplayGraph(message);
     }
 
     private void fireDisconnected() {
