@@ -19,6 +19,42 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <ImageView
+            android:id="@+id/eyeR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="270"
+            android:layout_gravity="center"
+            android:translationY="-180dp"
+            app:srcCompat="@drawable/eye_r" />
+
+        <ImageView
+            android:id="@+id/eyeRs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="270"
+            android:layout_gravity="center"
+            android:translationY="-180dp"
+            app:srcCompat="@drawable/eye_s_r" />
+
+        <ImageView
+            android:id="@+id/eyeL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="270"
+            android:layout_gravity="center"
+            android:translationY="180dp"
+            app:srcCompat="@drawable/eye_l" />
+
+        <ImageView
+            android:id="@+id/eyeLs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="270"
+            android:layout_gravity="center"
+            android:translationY="180dp"
+            app:srcCompat="@drawable/eye_s_l" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
@@ -98,6 +134,16 @@
             android:translationY="135dp"
             android:translationX="40dp"
             android:text="Graph" />
+
+        <Button
+            android:id="@+id/eyeView"
+            android:layout_gravity="center"
+            android:rotation="270"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:translationY="135dp"
+            android:translationX="0dp"
+            android:text="Eye" />
 
     </FrameLayout>
 

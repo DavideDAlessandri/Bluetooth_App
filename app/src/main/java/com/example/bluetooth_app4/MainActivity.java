@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
     private Button pageChanger;
     private ProgressBar progressBar;
     private ScrollView scrollView;
+    private ImageView eyeR, eyeRs, eyeL, eyeLs;
+    private Button eyeView;
+    Boolean notEyeBool = true;
 
     private BLEController bleController;
     private RemoteControl remoteControl;
@@ -46,6 +51,16 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
         scrollView = findViewById(R.id.scrollView2);
+        eyeR = findViewById(R.id.eyeR);
+        eyeRs = findViewById(R.id.eyeRs);
+        eyeL = findViewById(R.id.eyeL);
+        eyeLs = findViewById(R.id.eyeLs);
+        eyeView = findViewById(R.id.eyeView);
+
+        eyeR.setVisibility(View.GONE);
+        eyeRs.setVisibility(View.GONE);
+        eyeL.setVisibility(View.GONE);
+        eyeLs.setVisibility(View.GONE);
 
         progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +70,64 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 switchLEDButton.setVisibility(View.VISIBLE);
                 pageChanger.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.VISIBLE);
+                eyeView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                notEyeBool = true;
             }
         });
+
+        eyeR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connectButton.setVisibility(View.VISIBLE);
+                disconnectButton.setVisibility(View.VISIBLE);
+                switchLEDButton.setVisibility(View.VISIBLE);
+                pageChanger.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
+                eyeView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                eyeR.setVisibility(View.GONE);
+                eyeL.setVisibility(View.GONE);
+                eyeRs.setVisibility(View.GONE);
+                eyeLs.setVisibility(View.GONE);
+                notEyeBool = true;
+            }
+        });
+
+        eyeL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connectButton.setVisibility(View.VISIBLE);
+                disconnectButton.setVisibility(View.VISIBLE);
+                switchLEDButton.setVisibility(View.VISIBLE);
+                pageChanger.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
+                eyeView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                eyeR.setVisibility(View.GONE);
+                eyeL.setVisibility(View.GONE);
+                eyeRs.setVisibility(View.GONE);
+                eyeLs.setVisibility(View.GONE);
+                notEyeBool = true;
+            }
+        });
+
+        eyeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connectButton.setVisibility(View.GONE);
+                disconnectButton.setVisibility(View.GONE);
+                switchLEDButton.setVisibility(View.GONE);
+                pageChanger.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
+                eyeView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                eyeR.setVisibility(View.VISIBLE);
+                eyeL.setVisibility(View.VISIBLE);
+                notEyeBool = false;
+            }
+        });
+
 
         this.bleController = BLEController.getInstance(this);
         this.remoteControl = new RemoteControl(this.bleController);
@@ -67,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         initConnectButton();
         initDisconnectButton();
         initSwitchButton();
-        initCageChangerButton();
+        initPageChangerButton();
 
         checkBLESupport();
         checkPermissions();
@@ -141,11 +212,12 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 remoteControl.switchButton(); //isLEDOn
                 //log("LED switched " + (isLEDOn ? "On" : "Off"));
                 pageChanger.setEnabled(true);
+                eyeView.setEnabled(true);
             }
         });
     }
 
-    private void initCageChangerButton(){
+    private void initPageChangerButton(){
         this.pageChanger =findViewById(R.id.changePage);
         this.pageChanger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 disconnectButton.setVisibility(View.GONE);
                 switchLEDButton.setVisibility(View.GONE);
                 pageChanger.setVisibility(View.GONE);
+                eyeView.setVisibility(View.GONE);
                 scrollView.setVisibility(View.GONE);
             }
         });
@@ -168,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
                 disconnectButton.setEnabled(false);
                 switchLEDButton.setEnabled(false);
                 pageChanger.setEnabled(false);
+                eyeView.setEnabled(false);
             }
         });
     }
@@ -290,18 +364,35 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         //log("Message received " + messageCorrected);
 
         runOnUiThread(new Runnable() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
                 int number = Integer.parseInt(messageCorrected);
                 number = 100 - number;
-                progressBar.setProgress(number);
-                if(number>=66){
-                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_red));
-                }else if(number>=33){
-                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_yellow));
-                }else if(number>=0){
-                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_green));
+
+                if(notEyeBool){
+                    progressBar.setProgress(number);
+                    if(number>=66){
+                        progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_red));
+                    }else if(number>=33){
+                        progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_yellow));
+                    }else if(number>=0){
+                        progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_green));
+                    }
+                }else{
+                    if(number < 90){
+                        eyeL.setVisibility(View.VISIBLE);
+                        eyeR.setVisibility(View.VISIBLE);
+                        eyeLs.setVisibility(View.GONE);
+                        eyeRs.setVisibility(View.GONE);
+                    }else{
+                        eyeL.setVisibility(View.GONE);
+                        eyeR.setVisibility(View.GONE);
+                        eyeLs.setVisibility(View.VISIBLE);
+                        eyeRs.setVisibility(View.VISIBLE);
+                    }
                 }
+
             }
         });
 
