@@ -15,6 +15,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
     private Button disconnectButton;
     private Button switchLEDButton;
     private Button pageChanger;
+    private ProgressBar progressBar;
+    private ScrollView scrollView;
 
     private BLEController bleController;
     private RemoteControl remoteControl;
@@ -40,6 +44,19 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+        progressBar = findViewById(R.id.progressBar);
+        scrollView = findViewById(R.id.scrollView2);
+
+        progressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connectButton.setVisibility(View.VISIBLE);
+                disconnectButton.setVisibility(View.VISIBLE);
+                switchLEDButton.setVisibility(View.VISIBLE);
+                pageChanger.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        });
 
         this.bleController = BLEController.getInstance(this);
         this.remoteControl = new RemoteControl(this.bleController);
@@ -133,7 +150,12 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         this.pageChanger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeActivityTwo();
+                //changeActivityTwo();
+                connectButton.setVisibility(View.GONE);
+                disconnectButton.setVisibility(View.GONE);
+                switchLEDButton.setVisibility(View.GONE);
+                pageChanger.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
             }
         });
     }
@@ -218,15 +240,13 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
         }
     }
 
-    /*@Override
+    @Override
     protected void onPause() {
         super.onPause();
 
         this.bleController.removeBLEControllerListener(this);
         stopHeartBeat();
     }
-
-     */
 
     @Override
     public void BLEControllerConnected() {
@@ -264,7 +284,28 @@ public class MainActivity extends AppCompatActivity implements BLEControllerList
 
     @Override
     public void MessageReceived(String message){
-        log("Message received " + message);
+
+        final String messageCorrected = message.replaceAll("[\\(\\)\\[\\]\\{\\}]","");
+
+        //log("Message received " + messageCorrected);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int number = Integer.parseInt(messageCorrected);
+                number = 100 - number;
+                progressBar.setProgress(number);
+                if(number>=66){
+                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_red));
+                }else if(number>=33){
+                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_yellow));
+                }else if(number>=0){
+                    progressBar.setProgressDrawable(getDrawable(R.drawable.custom_progress_bg_green));
+                }
+            }
+        });
+
+
 
     }
 }

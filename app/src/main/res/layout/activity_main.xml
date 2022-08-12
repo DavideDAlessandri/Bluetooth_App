@@ -19,6 +19,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="636dp"
+            android:layout_height="128dp"
+            android:layout_gravity="center"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_progress_bg_green"
+            android:rotation="270"
+            android:translationX="0dp"
+            android:translationY="0dp" />
+
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
@@ -86,6 +98,7 @@
             android:translationY="135dp"
             android:translationX="40dp"
             android:text="Graph" />
+
     </FrameLayout>
 
 </LinearLayout>
